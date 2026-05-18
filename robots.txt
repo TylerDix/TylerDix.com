@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tylerdix.com/sitemap.xml
+Sitemap: https://tylerdix.github.io/slash-site/sitemap.xml
