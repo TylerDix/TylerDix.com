@@ -7,51 +7,35 @@
     <meta name="description" content="Random subnetting questions on the magic-number method, with a walkthrough on every miss. Free, offline, no tracking.">
     <meta property="og:title" content="Slash — Subnetting practice">
     <meta property="og:description" content="Random subnetting questions on the magic-number method. Walkthrough on every miss. Free, offline, no tracking.">
-    <meta property="og:image" content="https://tylerdix.github.io/slash-site/images/02-result-ipv4.png">
-    <meta name="theme-color" content="#7B61FF">
+    <meta property="og:image" content="https://tylerdix.com/images/02-result-ipv4.png">
+    <meta name="theme-color" content="#fafafa">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..125,400..800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --purple: #7B61FF;
-            --purple-deep: #5B47D9;
+            --accent: #d65a16;
+            --accent-soft: rgba(214, 90, 22, 0.12);
             --ink: #1d1d1f;
             --ink-soft: #424245;
             --muted: #86868b;
             --bg: #fafafa;
-            --bg-soft: #f4f2fb;
+            --bg-soft: #f4f3f1;
             --card: #ffffff;
-            --card-grid: #ffffff;
             --border: #e5e5ea;
-            --grid-cell-bg: #ffffff;
-            --grid-cell-bg-accent: rgba(123, 97, 255, 0.14);
-            --grid-cell-border: #e5e5ea;
-            --grid-cell-border-accent: rgba(123, 97, 255, 0.45);
-            --correct: #248a3d;
-            --correct-bg: rgba(52, 199, 89, 0.10);
-            --wrong: #c52e2e;
-            --wrong-bg: rgba(255, 59, 48, 0.10);
         }
         @media (prefers-color-scheme: dark) {
             :root {
+                --accent: #ff8a4c;
+                --accent-soft: rgba(255, 138, 76, 0.16);
                 --ink: #f5f5f7;
                 --ink-soft: #d1d1d6;
                 --muted: #98989d;
-                --bg: #0A0815;
-                --bg-soft: #1A1530;
+                --bg: #0c0c0e;
+                --bg-soft: #1a1a1c;
                 --card: #1c1c1e;
-                --card-grid: #1c1c1e;
                 --border: #2c2c2e;
-                --grid-cell-bg: #1c1c1e;
-                --grid-cell-bg-accent: rgba(123, 97, 255, 0.22);
-                --grid-cell-border: rgba(255, 255, 255, 0.08);
-                --grid-cell-border-accent: rgba(123, 97, 255, 0.55);
-                --correct: #30d158;
-                --correct-bg: rgba(52, 199, 89, 0.16);
-                --wrong: #ff6961;
-                --wrong-bg: rgba(255, 59, 48, 0.18);
             }
         }
         html { scroll-behavior: smooth; }
@@ -69,9 +53,9 @@
         code {
             font-size: 0.92em;
             padding: 1px 5px;
-            background: rgba(123, 97, 255, 0.10);
+            background: var(--accent-soft);
             border-radius: 4px;
-            color: var(--purple);
+            color: var(--accent);
         }
         .container {
             max-width: 720px;
@@ -97,7 +81,7 @@
         }
         .logo-mark {
             width: 30px; height: 30px;
-            background: var(--purple);
+            background: var(--accent);
             border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
             color: white;
@@ -111,7 +95,7 @@
             text-decoration: none;
             font-size: 0.95rem;
         }
-        nav .nav-link:hover { color: var(--purple); }
+        nav .nav-link:hover { color: var(--accent); }
 
         section { padding: 56px 0; }
         section.hero { padding: 32px 0 56px; text-align: center; }
@@ -125,7 +109,7 @@
             line-height: 1.04;
             margin-bottom: 14px;
         }
-        h1 .accent { color: var(--purple); }
+        h1 .accent { color: var(--accent); }
         h2 {
             font-family: "Bricolage Grotesque", -apple-system, sans-serif;
             font-variation-settings: "wdth" 110, "wght" 700;
@@ -179,7 +163,7 @@
             border-radius: 28px;
             overflow: hidden;
             box-shadow:
-                0 30px 60px -20px rgba(123, 97, 255, 0.35),
+                0 30px 60px -20px rgba(0, 0, 0, 0.28),
                 0 0 0 1px rgba(0, 0, 0, 0.06);
             background: var(--bg-soft);
         }
@@ -246,7 +230,7 @@
             line-height: 1.55;
         }
         section.legal ul { padding-left: 20px; margin-bottom: 10px; }
-        section.legal a { color: var(--purple); text-decoration: none; }
+        section.legal a { color: var(--accent); text-decoration: none; }
         section.legal a:hover { text-decoration: underline; }
         section.legal .support-block { margin-bottom: 28px; }
 
@@ -258,7 +242,7 @@
             text-align: center;
         }
         footer a { color: var(--muted); text-decoration: none; }
-        footer a:hover { color: var(--purple); }
+        footer a:hover { color: var(--accent); }
         footer .sep { margin: 0 8px; opacity: 0.5; }
 
         @media (max-width: 420px) {
@@ -271,7 +255,7 @@
 <body>
     <nav>
         <div class="container">
-            <a href="/slash-site/" class="logo">
+            <a href="/" class="logo">
                 <span class="logo-mark">/</span>
                 Slash
             </a>
