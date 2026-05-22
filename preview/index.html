@@ -10,7 +10,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tylerdix.com/">
     <meta property="og:image" content="https://tylerdix.com/images/desert.jpg">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#1b1b1b">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -18,33 +18,34 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
         body {
-            background: #000;
+            background: #1b1b1b;
             color: #fff;
             font-family: "EB Garamond", Georgia, "Times New Roman", serif;
             overflow: hidden;
         }
 
-        /* desert illustration: anchored to the bottom, full art visible, sky extends upward */
+        /* fill the screen with the illustration; on phones use the tall version
+           (sky extended upward) so the full desert shows with no side-cropping */
         .bg {
             position: fixed;
             inset: 0;
             z-index: 0;
-            background: #000 url("/images/desert.jpg") no-repeat center bottom;
-            background-size: contain;
+            background: #1b1b1b url("/images/desert-portrait.jpg") no-repeat center bottom;
+            background-size: cover;
         }
-        /* soft darkening at the top so the name stays legible against the sky */
+        /* very soft top darkening to guarantee the name reads */
         .topfade {
             position: fixed;
             top: 0; left: 0; right: 0;
-            height: 34vh;
+            height: 30vh;
             z-index: 1;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 100%);
             pointer-events: none;
         }
 
         .name {
             position: fixed;
-            top: 17vh;
+            top: 15vh;
             left: 8vw;
             z-index: 2;
             text-align: left;
@@ -54,6 +55,7 @@
             font-size: clamp(1.9rem, 8vw, 3rem);
             letter-spacing: 0.015em;
             line-height: 1.0;
+            text-shadow: 0 2px 18px rgba(0, 0, 0, 0.8);
         }
         .name .tagline {
             margin-top: 4px;
@@ -61,11 +63,16 @@
             font-size: clamp(0.92rem, 3.4vw, 1.12rem);
             font-weight: 400;
             color: #dadadc;
+            text-shadow: 0 1px 14px rgba(0, 0, 0, 0.85);
         }
 
-        /* desktop / landscape: name up near the top of the taller sky */
+        /* wide / landscape screens: use the square illustration, name near top */
         @media (min-aspect-ratio: 1/1) {
-            .name { top: 8vh; }
+            .bg {
+                background-image: url("/images/desert.jpg");
+                background-position: center;
+            }
+            .name { top: 7vh; }
         }
     </style>
 </head>
