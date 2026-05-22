@@ -9,7 +9,8 @@
     <meta property="og:description" content="human being living in Arizona, US">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tylerdix.com/">
-    <meta name="theme-color" content="#04050a">
+    <meta property="og:image" content="https://tylerdix.com/images/desert.jpg">
+    <meta name="theme-color" content="#000000">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;600&display=swap" rel="stylesheet">
@@ -17,206 +18,61 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
         body {
-            background: #04050a;
-            color: #ffffff;
+            background: #000;
+            color: #fff;
             font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow: hidden;
         }
 
-        /* ---- sky ---- */
-        .sky {
+        /* desert illustration: anchored to the bottom so the black sky extends upward */
+        .bg {
             position: fixed;
             inset: 0;
             z-index: 0;
-            background: linear-gradient(to bottom,
-                #04050a 0%,
-                #080a10 42%,
-                #141823 70%,
-                #272d38 100%);
+            background: #000 url("/images/desert.jpg") no-repeat center bottom;
+            background-size: contain;
         }
-        .moon {
-            position: absolute;
-            top: 11vh;
-            right: 16vw;
-            width: clamp(74px, 17vw, 132px);
-            aspect-ratio: 1;
-            border-radius: 50%;
-            background:
-                radial-gradient(circle at 38% 36%, #ffffff 0%, #f3f3f1 55%, #e4e4e0 100%);
-            box-shadow:
-                0 0 40px 8px rgba(255, 255, 255, 0.18),
-                0 0 90px 30px rgba(255, 255, 255, 0.10),
-                0 0 180px 70px rgba(255, 255, 255, 0.05),
-                0 0 300px 140px rgba(255, 255, 255, 0.02);
-        }
-        .moon::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background:
-                radial-gradient(circle at 64% 60%, rgba(0,0,0,0.06) 0 8%, transparent 9%),
-                radial-gradient(circle at 40% 70%, rgba(0,0,0,0.05) 0 6%, transparent 7%),
-                radial-gradient(circle at 70% 34%, rgba(0,0,0,0.04) 0 5%, transparent 6%);
-        }
-        #stars { position: absolute; inset: 0; }
-        .star {
-            position: absolute;
-            border-radius: 50%;
-            background: #ffffff;
-            animation: twinkle var(--dur, 4s) ease-in-out infinite;
-            animation-delay: var(--delay, 0s);
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: var(--lo, 0.25); }
-            50%      { opacity: var(--hi, 1); }
-        }
-        /* shooting star: travels down-left, trail aligned to motion */
-        .shoot {
-            position: absolute;
-            top: 13%;
-            left: 72%;
-            width: 120px;
-            height: 2px;
-            border-radius: 2px;
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 100%);
-            opacity: 0;
-            transform: translate(0, 0) rotate(145deg);
-            animation: shoot 15s ease-in infinite;
-        }
-        @keyframes shoot {
-            0%, 89%  { opacity: 0; transform: translate(0, 0) rotate(145deg); }
-            91%      { opacity: 0; transform: translate(0, 0) rotate(145deg); }
-            93%      { opacity: 1; }
-            99%      { opacity: 0; transform: translate(-240px, 168px) rotate(145deg); }
-            100%     { opacity: 0; transform: translate(-240px, 168px) rotate(145deg); }
-        }
-
-        /* ---- horizon ---- */
-        .horizon {
+        /* soft darkening at the very top so the name stays legible against the sky */
+        .topfade {
             position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 46vh;
+            top: 0; left: 0; right: 0;
+            height: 30vh;
             z-index: 1;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0) 100%);
+            pointer-events: none;
         }
-        .horizon svg { width: 100%; height: 100%; display: block; }
 
-        /* ---- content ---- */
-        .content {
-            position: relative;
+        .name {
+            position: fixed;
+            top: 5.5vh;
+            left: 7vw;
             z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 24px;
-            transform: translateY(-7vh);
+            text-align: left;
         }
-        h1 {
-            font-weight: 600;
-            font-size: clamp(2.6rem, 12vw, 5.2rem);
-            letter-spacing: 0.02em;
-            text-indent: 0.02em;
-            line-height: 1.04;
-            text-shadow: 0 2px 30px rgba(0, 0, 0, 0.7);
+        .name h1 {
+            font-weight: 500;
+            font-size: clamp(1.5rem, 6.5vw, 2.6rem);
+            letter-spacing: 0.04em;
+            line-height: 1.05;
+            text-shadow: 0 2px 16px rgba(0, 0, 0, 0.85);
         }
-        .tagline {
-            margin-top: 18px;
-            font-size: clamp(0.92rem, 3vw, 1.16rem);
+        .name .tagline {
+            margin-top: 7px;
+            font-size: clamp(0.78rem, 3vw, 0.98rem);
             font-weight: 300;
             letter-spacing: 0.04em;
-            color: #cdcdce;
-            text-shadow: 0 1px 18px rgba(0, 0, 0, 0.7);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .star { animation: none; opacity: 0.7; }
-            .shoot { display: none; }
+            color: #d7d7d9;
+            text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9);
         }
     </style>
 </head>
 <body>
-    <div class="sky" aria-hidden="true">
-        <div class="moon"></div>
-        <div id="stars"></div>
-        <div class="shoot"></div>
-    </div>
+    <div class="bg" aria-hidden="true"></div>
+    <div class="topfade" aria-hidden="true"></div>
 
-    <div class="horizon" aria-hidden="true">
-        <svg viewBox="0 0 1200 480" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,210 L150,150 L280,196 L410,120 L560,188 L690,128 L840,196 L980,134 L1120,190 L1200,156 L1200,480 L0,480 Z" fill="#13151b"/>
-            <path d="M0,300 C180,262 320,330 520,300 C700,272 880,344 1080,300 C1140,288 1200,300 1200,300 L1200,480 L0,480 Z" fill="#252b35"/>
-            <g id="cacti"></g>
-            <path d="M0,392 C220,360 360,420 600,392 C840,366 1000,424 1200,392 L1200,480 L0,480 Z" fill="#0a0b0f"/>
-        </svg>
-    </div>
-
-    <main class="content">
+    <header class="name">
         <h1>Tyler Dix</h1>
         <p class="tagline">human being living in Arizona, US</p>
-    </main>
-
-    <script>
-        (function () {
-            // ---- responsive twinkling stars (HTML, % positioned) ----
-            var stars = document.getElementById("stars");
-            var N = 95;
-            var frag = document.createDocumentFragment();
-            for (var i = 0; i < N; i++) {
-                var s = document.createElement("div");
-                s.className = "star";
-                var size = (Math.random() * 1.8 + 0.8);
-                s.style.width = size.toFixed(2) + "px";
-                s.style.height = size.toFixed(2) + "px";
-                s.style.left = (Math.random() * 100).toFixed(2) + "%";
-                s.style.top = (Math.random() * 66).toFixed(2) + "%";
-                if (size > 2) s.style.boxShadow = "0 0 4px 1px rgba(255,255,255,0.5)";
-                s.style.setProperty("--lo", (Math.random() * 0.3 + 0.1).toFixed(2));
-                s.style.setProperty("--hi", (Math.random() * 0.25 + 0.72).toFixed(2));
-                s.style.setProperty("--dur", (Math.random() * 4 + 2.4).toFixed(2) + "s");
-                s.style.setProperty("--delay", (Math.random() * 6).toFixed(2) + "s");
-                frag.appendChild(s);
-            }
-            stars.appendChild(frag);
-
-            // ---- saguaro silhouettes ----
-            var SVGNS = "http://www.w3.org/2000/svg";
-            var cacti = document.getElementById("cacti");
-            function rrect(g, x, y, w, h, fill) {
-                var r = document.createElementNS(SVGNS, "rect");
-                r.setAttribute("x", x); r.setAttribute("y", y);
-                r.setAttribute("width", w); r.setAttribute("height", h);
-                r.setAttribute("rx", Math.min(w, h) / 2);
-                r.setAttribute("fill", fill);
-                g.appendChild(r);
-            }
-            function saguaro(cx, baseY, h, fill) {
-                var g = document.createElementNS(SVGNS, "g");
-                var tw = h * 0.14;            // trunk width
-                var at = tw * 0.80;           // arm thickness
-                // trunk
-                rrect(g, cx - tw / 2, baseY - h, tw, h, fill);
-                // right arm: out then up (tall)
-                var rReach = h * 0.16, rTop = baseY - h * 0.86, rElbow = baseY - h * 0.46;
-                rrect(g, cx - tw / 2, rElbow, tw / 2 + rReach, at, fill);
-                rrect(g, cx + rReach - at / 2, rTop, at, rElbow + at - rTop, fill);
-                // left arm: out then up (lower, shorter)
-                var lReach = h * 0.15, lTop = baseY - h * 0.72, lElbow = baseY - h * 0.36;
-                rrect(g, cx - tw / 2 - lReach, lElbow, tw / 2 + lReach, at, fill);
-                rrect(g, cx - lReach - at / 2, lTop, at, lElbow + at - lTop, fill);
-                cacti.appendChild(g);
-            }
-            // central group (visible on phones) + wings (desktop)
-            saguaro(600, 372, 158, "#000000");  // hero, center
-            saguaro(770, 392, 104, "#000000");  // medium, right (with gap)
-            saguaro(445, 388, 88,  "#04050a");  // small, left (with gap)
-            saguaro(200, 392, 122, "#000000");  // desktop far left
-            saguaro(1000, 392, 116, "#000000"); // desktop far right
-        })();
-    </script>
+    </header>
 </body>
 </html>
