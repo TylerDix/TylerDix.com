@@ -3,380 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slash — Subnetting practice for iPhone, iPad, Mac</title>
-    <meta name="description" content="Random subnetting questions on the magic-number method, with a walkthrough on every miss. Free, offline, no tracking.">
-    <meta property="og:title" content="Slash — Subnetting practice">
-    <meta property="og:description" content="Random subnetting questions on the magic-number method. Walkthrough on every miss. Free, offline, no tracking.">
-    <meta property="og:image" content="https://tylerdix.com/images/02-result-ipv4.png">
-    <meta name="theme-color" content="#7B61FF">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..125,400..800&display=swap" rel="stylesheet">
+    <title>Tyler Dix</title>
+    <meta name="description" content="Tyler Dix — human being living in Arizona, US.">
+    <meta property="og:title" content="Tyler Dix">
+    <meta property="og:description" content="human being living in Arizona, US">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tylerdix.com/">
+    <meta name="theme-color" content="#0a0a0a">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --purple: #7B61FF;
-            --purple-deep: #5B47D9;
-            --ink: #1d1d1f;
-            --ink-soft: #424245;
-            --muted: #86868b;
-            --bg: #fafafa;
-            --bg-soft: #f4f2fb;
-            --card: #ffffff;
-            --card-grid: #ffffff;
-            --border: #e5e5ea;
-            --grid-cell-bg: #ffffff;
-            --grid-cell-bg-accent: rgba(123, 97, 255, 0.14);
-            --grid-cell-border: #e5e5ea;
-            --grid-cell-border-accent: rgba(123, 97, 255, 0.45);
-            --correct: #248a3d;
-            --correct-bg: rgba(52, 199, 89, 0.10);
-            --wrong: #c52e2e;
-            --wrong-bg: rgba(255, 59, 48, 0.10);
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --ink: #f5f5f7;
-                --ink-soft: #d1d1d6;
-                --muted: #98989d;
-                --bg: #0A0815;
-                --bg-soft: #1A1530;
-                --card: #1c1c1e;
-                --card-grid: #1c1c1e;
-                --border: #2c2c2e;
-                --grid-cell-bg: #1c1c1e;
-                --grid-cell-bg-accent: rgba(123, 97, 255, 0.22);
-                --grid-cell-border: rgba(255, 255, 255, 0.08);
-                --grid-cell-border-accent: rgba(123, 97, 255, 0.55);
-                --correct: #30d158;
-                --correct-bg: rgba(52, 199, 89, 0.16);
-                --wrong: #ff6961;
-                --wrong-bg: rgba(255, 59, 48, 0.18);
-            }
-        }
-        html { scroll-behavior: smooth; }
+        html, body { height: 100%; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-            color: var(--ink);
-            background: var(--bg);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        code, .mono {
-            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-        }
-        code {
-            font-size: 0.92em;
-            padding: 1px 5px;
-            background: rgba(123, 97, 255, 0.10);
-            border-radius: 4px;
-            color: var(--purple);
-        }
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        nav {
-            padding: 18px 0;
-        }
-        nav .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: var(--ink);
-            text-decoration: none;
-        }
-        .logo-mark {
-            width: 30px; height: 30px;
-            background: var(--purple);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 1.05rem;
-            font-family: "Bricolage Grotesque", -apple-system, sans-serif;
-            font-variation-settings: "wdth" 110, "wght" 800;
-        }
-        nav .nav-link {
-            color: var(--ink-soft);
-            text-decoration: none;
-            font-size: 0.95rem;
-        }
-        nav .nav-link:hover { color: var(--purple); }
-
-        section { padding: 56px 0; }
-        section.hero { padding: 32px 0 56px; text-align: center; }
-
-        h1 {
-            font-family: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            font-variation-settings: "wdth" 115, "wght" 800;
-            font-size: clamp(2.2rem, 8vw, 3.6rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1.04;
-            margin-bottom: 14px;
-        }
-        h1 .accent { color: var(--purple); }
-        h2 {
-            font-family: "Bricolage Grotesque", -apple-system, sans-serif;
-            font-variation-settings: "wdth" 110, "wght" 700;
-            font-size: clamp(1.6rem, 5vw, 2.2rem);
-            font-weight: 700;
-            letter-spacing: -0.015em;
-            line-height: 1.1;
-            margin-bottom: 12px;
-            text-align: center;
-        }
-        .tagline {
-            font-size: clamp(1rem, 3vw, 1.15rem);
-            color: var(--ink-soft);
-            max-width: 560px;
-            margin: 0 auto 22px;
-        }
-        .platforms {
-            color: var(--muted);
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 20px;
-        }
-        .app-store-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #000;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: transform 0.15s ease;
-        }
-        .app-store-badge:hover { transform: translateY(-1px); }
-        .app-store-badge svg { width: 26px; height: 26px; flex-shrink: 0; }
-        .app-store-badge .lines {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            line-height: 1.1;
-        }
-        .app-store-badge .small { font-size: 0.68rem; opacity: 0.85; }
-        .app-store-badge .big { font-size: 1.1rem; font-weight: 600; }
-
-        .hero-video-wrap {
-            margin: 38px auto 0;
-            width: min(272px, 74vw);
-            aspect-ratio: 886 / 1920;
-            border-radius: 28px;
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
-            box-shadow:
-                0 30px 60px -20px rgba(123, 97, 255, 0.35),
-                0 0 0 1px rgba(0, 0, 0, 0.06);
-            background: var(--bg-soft);
         }
-        .hero-video-wrap video {
+        .scene {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+        .scene svg {
             width: 100%;
             height: 100%;
-            object-fit: cover;
             display: block;
         }
-
-        .lead {
-            color: var(--ink-soft);
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            max-width: 560px;
-            margin: 0 auto 32px;
-            font-size: 1rem;
+            padding: 24px;
+            /* keep text in the clear upper-middle, above the dunes */
+            transform: translateY(-6vh);
+        }
+        h1 {
+            font-weight: 400;
+            font-size: clamp(2.1rem, 7vw, 4.2rem);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            /* optical centering: compensate for letter-spacing on the right */
+            text-indent: 0.18em;
+            text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
+        }
+        .tagline {
+            margin-top: 18px;
+            font-size: clamp(0.9rem, 2.6vw, 1.15rem);
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            color: #c8c8c8;
+            text-shadow: 0 1px 16px rgba(0, 0, 0, 0.6);
         }
 
-        section.maker {
-            text-align: center;
+        /* twinkle */
+        .star { animation: twinkle var(--dur, 4s) ease-in-out infinite; transform-origin: center; }
+        @keyframes twinkle {
+            0%, 100% { opacity: var(--lo, 0.25); }
+            50%      { opacity: var(--hi, 1); }
         }
-        section.maker p {
-            max-width: 560px;
-            margin: 0 auto;
-            color: var(--ink-soft);
-            font-size: 1rem;
+        /* drifting wisp of cloud */
+        #cloud { animation: drift 90s linear infinite; }
+        @keyframes drift {
+            from { transform: translateX(-260px); }
+            to   { transform: translateX(1460px); }
         }
-        section.maker p + p { margin-top: 14px; }
+        /* occasional shooting star */
+        #shoot {
+            opacity: 0;
+            animation: shoot 11s ease-in infinite;
+        }
+        @keyframes shoot {
+            0%, 82%   { opacity: 0; transform: translate(0, 0); }
+            83%       { opacity: 0; transform: translate(0, 0); }
+            86%       { opacity: 1; }
+            96%       { opacity: 0; transform: translate(-260px, 150px); }
+            100%      { opacity: 0; transform: translate(-260px, 150px); }
+        }
 
-        section.cta-final {
-            text-align: center;
-            background: var(--bg-soft);
-        }
-        section.cta-final h2 { margin-bottom: 20px; }
-
-        section.legal {
-            padding: 48px 0 40px;
-            border-top: 1px solid var(--border);
-            background: var(--bg);
-        }
-        section.legal .container { max-width: 640px; }
-        section.legal h2 {
-            text-align: left;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        section.legal h3 {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 0.98rem;
-            font-weight: 600;
-            margin: 22px 0 6px;
-        }
-        section.legal .effective {
-            color: var(--muted);
-            font-size: 0.85rem;
-            margin-bottom: 16px;
-        }
-        section.legal p, section.legal li {
-            color: var(--ink-soft);
-            font-size: 0.92rem;
-            margin-bottom: 8px;
-            line-height: 1.55;
-        }
-        section.legal ul { padding-left: 20px; margin-bottom: 10px; }
-        section.legal a { color: var(--purple); text-decoration: none; }
-        section.legal a:hover { text-decoration: underline; }
-        section.legal .support-block { margin-bottom: 28px; }
-
-        footer {
-            padding: 28px 0 32px;
-            border-top: 1px solid var(--border);
-            color: var(--muted);
-            font-size: 0.85rem;
-            text-align: center;
-        }
-        footer a { color: var(--muted); text-decoration: none; }
-        footer a:hover { color: var(--purple); }
-        footer .sep { margin: 0 8px; opacity: 0.5; }
-
-        @media (max-width: 420px) {
-            .container { padding: 0 16px; }
-            section { padding: 44px 0; }
-            section.hero { padding: 24px 0 44px; }
+        @media (prefers-reduced-motion: reduce) {
+            .star, #cloud, #shoot { animation: none; }
+            .star { opacity: 0.7; }
+            #shoot { opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <a href="/" class="logo">
-                <span class="logo-mark">/</span>
-                Slash
-            </a>
-            <a class="nav-link" href="https://apps.apple.com/app/id6764183064">App Store →</a>
-        </div>
-    </nav>
+    <div class="scene" aria-hidden="true">
+        <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#070708"/>
+                    <stop offset="0.6" stop-color="#161719"/>
+                    <stop offset="1" stop-color="#26282b"/>
+                </linearGradient>
+                <radialGradient id="moonGlow" cx="0.5" cy="0.5" r="0.5">
+                    <stop offset="0" stop-color="#ffffff" stop-opacity="0.45"/>
+                    <stop offset="0.4" stop-color="#ffffff" stop-opacity="0.12"/>
+                    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Subnet without <span class="accent">binary.</span></h1>
-            <p class="tagline">Random subnetting questions. The walkthrough uses the magic-number method, not binary math.</p>
-            <div class="platforms">iPhone · iPad · Mac · Free</div>
-            <a class="app-store-badge" href="https://apps.apple.com/app/id6764183064">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M17.05 20.28c-.98.95-2.05.86-3.08.43-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.43C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01ZM12 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/>
-                </svg>
-                <span class="lines">
-                    <span class="small">Download on the</span>
-                    <span class="big">App Store</span>
-                </span>
-            </a>
-            <div class="hero-video-wrap">
-                <video src="videos/slash-hero.mp4" poster="videos/slash-hero-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Slash app preview"></video>
-            </div>
-        </div>
-    </section>
+            <rect x="0" y="0" width="1200" height="800" fill="url(#sky)"/>
 
-    <section class="maker">
-        <div class="container">
-            <h2>Who made it.</h2>
-            <p>I learned the magic-number method studying for a networking cert. Couldn't find a practice app that drilled it the way the real exam asks, so I built one.</p>
-            <p>The math runs live. Nothing's pulled from a question bank or generated by an LLM.</p>
-        </div>
-    </section>
+            <!-- moon -->
+            <circle cx="930" cy="150" r="150" fill="url(#moonGlow)"/>
+            <circle cx="930" cy="150" r="46" fill="#fafafa"/>
+            <circle cx="912" cy="138" r="9" fill="#dcdcdc" opacity="0.7"/>
+            <circle cx="946" cy="162" r="6" fill="#dcdcdc" opacity="0.6"/>
+            <circle cx="938" cy="132" r="4" fill="#dcdcdc" opacity="0.6"/>
 
-    <section class="cta-final">
-        <div class="container">
-            <h2>It's free.</h2>
-            <p class="lead">iPhone, iPad, Mac. Works offline. No accounts, no analytics.</p>
-            <a class="app-store-badge" href="https://apps.apple.com/app/id6764183064">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M17.05 20.28c-.98.95-2.05.86-3.08.43-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.43C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01ZM12 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25Z"/>
-                </svg>
-                <span class="lines">
-                    <span class="small">Download on the</span>
-                    <span class="big">App Store</span>
-                </span>
-            </a>
-        </div>
-    </section>
+            <g id="stars"></g>
 
-    <section class="legal" id="support-section">
-        <div class="container">
-            <div class="support-block">
-                <h2>Support</h2>
-                <p>Questions, bugs, or feature requests — email me anytime: <a href="mailto:hello@tylerdix.com">hello@tylerdix.com</a></p>
-            </div>
+            <!-- shooting star -->
+            <g id="shoot">
+                <line x1="380" y1="120" x2="430" y2="92" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="430" cy="92" r="2.2" fill="#ffffff"/>
+            </g>
 
-            <h2 id="privacy">Privacy</h2>
-            <p class="effective"><strong>Effective date:</strong> May 5, 2026</p>
+            <!-- faint drifting cloud -->
+            <g id="cloud" opacity="0.10">
+                <ellipse cx="120" cy="210" rx="150" ry="20" fill="#ffffff"/>
+                <ellipse cx="60"  cy="218" rx="90"  ry="14" fill="#ffffff"/>
+                <ellipse cx="200" cy="220" rx="100" ry="13" fill="#ffffff"/>
+            </g>
 
-            <p>Slash collects nothing. The app runs entirely on your device with no network connection, no account, and no third parties.</p>
+            <!-- distant mountain ridge -->
+            <path d="M0,470 L120,402 L235,448 L350,360 L470,432 L585,372 L720,446 L835,372 L975,438 L1090,392 L1200,446 L1200,800 L0,800 Z" fill="#1b1c1e"/>
 
-            <h3>Data we collect</h3>
-            <p><strong>None.</strong> Slash does not collect, store, or transmit any personal information.</p>
+            <!-- rolling foreground dunes -->
+            <path d="M0,575 C200,532 320,612 520,572 C700,536 880,618 1080,566 C1140,551 1200,566 1200,566 L1200,800 L0,800 Z" fill="#040405"/>
 
-            <h3>What stays on your device</h3>
-            <ul>
-                <li><strong>Practice stats</strong> — total questions answered, accuracy, per-question-type performance, milestone progress, and the You're Ready badge state. Stored locally; reset anytime in Settings.</li>
-                <li><strong>Calculation history</strong> — recent entries you've typed in the Calculator tab, kept locally so you can revisit them. Cleared when you tap Clear.</li>
-                <li><strong>Preferences</strong> — your theme, IPv6 toggle, welcome sheet state, and other choices, stored in standard iOS/macOS app storage.</li>
-            </ul>
-            <p>This data never leaves your device. If you delete the app, it's gone.</p>
+            <g id="foreground"></g>
+        </svg>
+    </div>
 
-            <h3>What it doesn't do</h3>
-            <ul>
-                <li>No accounts. No login.</li>
-                <li>No network requests. The app is fully offline.</li>
-                <li>No analytics, crash reporting, or telemetry.</li>
-                <li>No advertising or advertising identifiers.</li>
-                <li>No third-party SDKs of any kind.</li>
-                <li>No location, contacts, photos, or device identifiers.</li>
-            </ul>
+    <main class="content">
+        <h1>Tyler Dix</h1>
+        <p class="tagline">human being living in Arizona, US</p>
+    </main>
 
-            <h3>Children's privacy</h3>
-            <p>Slash does not collect personal information from anyone, including children. The app is rated 4+ and is safe for all ages.</p>
+    <script>
+        (function () {
+            var SVGNS = "http://www.w3.org/2000/svg";
 
-            <h3>Changes</h3>
-            <p>If this policy changes, the updated version will be posted here with a new effective date.</p>
+            // --- stars: scattered above the ridge line ---
+            var starsGroup = document.getElementById("stars");
+            var STAR_COUNT = 70;
+            for (var i = 0; i < STAR_COUNT; i++) {
+                var x = Math.random() * 1200;
+                var y = Math.random() * 400 + 12;        // 12 .. 412 (above mountains)
+                var r = Math.random() * 1.1 + 0.5;        // 0.5 .. 1.6
+                var c = document.createElementNS(SVGNS, "circle");
+                c.setAttribute("cx", x.toFixed(1));
+                c.setAttribute("cy", y.toFixed(1));
+                c.setAttribute("r", r.toFixed(2));
+                c.setAttribute("fill", "#ffffff");
+                c.setAttribute("class", "star");
+                var lo = (Math.random() * 0.3 + 0.12).toFixed(2);   // dim baseline
+                var hi = (Math.random() * 0.3 + 0.7).toFixed(2);    // bright peak
+                var dur = (Math.random() * 4 + 2.5).toFixed(2) + "s";
+                var delay = (Math.random() * 6).toFixed(2) + "s";
+                c.style.setProperty("--lo", lo);
+                c.style.setProperty("--hi", hi);
+                c.style.setProperty("--dur", dur);
+                c.style.animationDelay = delay;
+                starsGroup.appendChild(c);
+            }
 
-            <h3>Contact</h3>
-            <p>Questions about this policy? Email <a href="mailto:hello@tylerdix.com">hello@tylerdix.com</a>.</p>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            &copy; 2026 Dix
-            <span class="sep">·</span>
-            <a href="#privacy">Privacy</a>
-            <span class="sep">·</span>
-            <a href="#support-section">Support</a>
-            <span class="sep">·</span>
-            <a href="https://apps.apple.com/app/id6764183064">App Store</a>
-        </div>
-    </footer>
+            // --- saguaro silhouettes built from rounded rects ---
+            function rrect(parent, x, y, w, h, fill) {
+                var r = document.createElementNS(SVGNS, "rect");
+                r.setAttribute("x", x);
+                r.setAttribute("y", y);
+                r.setAttribute("width", w);
+                r.setAttribute("height", h);
+                r.setAttribute("rx", Math.min(w, h) / 2);
+                r.setAttribute("fill", fill);
+                parent.appendChild(r);
+            }
+            function saguaro(cx, baseY, h, fill) {
+                var g = document.createElementNS(SVGNS, "g");
+                var tw = h * 0.15;                       // trunk width
+                // trunk
+                rrect(g, cx - tw / 2, baseY - h, tw, h, fill);
+                // right arm: elbow out, then up
+                rrect(g, cx + tw * 0.2, baseY - h * 0.52, h * 0.20, tw * 0.85, fill);
+                rrect(g, cx + tw * 0.2 + h * 0.20 - tw * 0.85, baseY - h * 0.80, tw * 0.85, h * 0.32, fill);
+                // left arm: elbow out, then up (a touch lower)
+                rrect(g, cx - tw * 0.2 - h * 0.17, baseY - h * 0.44, h * 0.17, tw * 0.85, fill);
+                rrect(g, cx - tw * 0.2 - h * 0.17, baseY - h * 0.70, tw * 0.85, h * 0.30, fill);
+                document.getElementById("foreground").appendChild(g);
+            }
+            // depth: far/smaller/lighter behind, near/bigger/black in front
+            saguaro(640, 560, 150, "#101113");   // distant
+            saguaro(250, 600, 250, "#000000");   // foreground left
+            saguaro(980, 600, 200, "#000000");   // foreground right
+            saguaro(150, 605, 130, "#000000");   // small clump left
+        })();
+    </script>
 </body>
 </html>
