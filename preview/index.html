@@ -12,14 +12,14 @@
     <meta name="theme-color" content="#04050a">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; }
         body {
             background: #04050a;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             overflow: hidden;
         }
 
@@ -44,8 +44,10 @@
             background:
                 radial-gradient(circle at 38% 36%, #ffffff 0%, #f3f3f1 55%, #e4e4e0 100%);
             box-shadow:
-                0 0 50px 14px rgba(255, 255, 255, 0.16),
-                0 0 120px 50px rgba(255, 255, 255, 0.07);
+                0 0 40px 8px rgba(255, 255, 255, 0.18),
+                0 0 90px 30px rgba(255, 255, 255, 0.10),
+                0 0 180px 70px rgba(255, 255, 255, 0.05),
+                0 0 300px 140px rgba(255, 255, 255, 0.02);
         }
         .moon::after {
             content: "";
@@ -69,23 +71,25 @@
             0%, 100% { opacity: var(--lo, 0.25); }
             50%      { opacity: var(--hi, 1); }
         }
+        /* shooting star: travels down-left, trail aligned to motion */
         .shoot {
             position: absolute;
-            top: 16%;
-            left: 70%;
-            width: 130px;
-            height: 1.5px;
-            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 100%);
-            transform: rotate(18deg);
+            top: 13%;
+            left: 72%;
+            width: 120px;
+            height: 2px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 100%);
             opacity: 0;
-            animation: shoot 14s ease-in infinite;
+            transform: translate(0, 0) rotate(145deg);
+            animation: shoot 15s ease-in infinite;
         }
         @keyframes shoot {
-            0%, 88%  { opacity: 0; transform: translate(0,0) rotate(18deg); }
-            90%      { opacity: 0; }
-            92%      { opacity: 1; }
-            99%      { opacity: 0; transform: translate(-220px, 80px) rotate(18deg); }
-            100%     { opacity: 0; }
+            0%, 89%  { opacity: 0; transform: translate(0, 0) rotate(145deg); }
+            91%      { opacity: 0; transform: translate(0, 0) rotate(145deg); }
+            93%      { opacity: 1; }
+            99%      { opacity: 0; transform: translate(-240px, 168px) rotate(145deg); }
+            100%     { opacity: 0; transform: translate(-240px, 168px) rotate(145deg); }
         }
 
         /* ---- horizon ---- */
@@ -113,19 +117,18 @@
             transform: translateY(-7vh);
         }
         h1 {
-            font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-            font-weight: 500;
-            font-size: clamp(2.5rem, 11vw, 5rem);
-            letter-spacing: 0.1em;
-            text-indent: 0.1em;
-            line-height: 1.05;
+            font-weight: 600;
+            font-size: clamp(2.6rem, 12vw, 5.2rem);
+            letter-spacing: 0.02em;
+            text-indent: 0.02em;
+            line-height: 1.04;
             text-shadow: 0 2px 30px rgba(0, 0, 0, 0.7);
         }
         .tagline {
-            margin-top: 20px;
-            font-size: clamp(0.92rem, 3vw, 1.18rem);
+            margin-top: 18px;
+            font-size: clamp(0.92rem, 3vw, 1.16rem);
             font-weight: 300;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
             color: #cdcdce;
             text-shadow: 0 1px 18px rgba(0, 0, 0, 0.7);
         }
@@ -193,22 +196,26 @@
             }
             function saguaro(cx, baseY, h, fill) {
                 var g = document.createElementNS(SVGNS, "g");
-                var tw = h * 0.13;
-                var at = tw * 0.82;
+                var tw = h * 0.14;            // trunk width
+                var at = tw * 0.80;           // arm thickness
+                // trunk
                 rrect(g, cx - tw / 2, baseY - h, tw, h, fill);
-                var rReach = h * 0.17, rTop = baseY - h * 0.80, rElbow = baseY - h * 0.50;
+                // right arm: out then up (tall)
+                var rReach = h * 0.16, rTop = baseY - h * 0.86, rElbow = baseY - h * 0.46;
                 rrect(g, cx - tw / 2, rElbow, tw / 2 + rReach, at, fill);
                 rrect(g, cx + rReach - at / 2, rTop, at, rElbow + at - rTop, fill);
-                var lReach = h * 0.15, lTop = baseY - h * 0.70, lElbow = baseY - h * 0.42;
+                // left arm: out then up (lower, shorter)
+                var lReach = h * 0.15, lTop = baseY - h * 0.72, lElbow = baseY - h * 0.36;
                 rrect(g, cx - tw / 2 - lReach, lElbow, tw / 2 + lReach, at, fill);
                 rrect(g, cx - lReach - at / 2, lTop, at, lElbow + at - lTop, fill);
                 cacti.appendChild(g);
             }
-            saguaro(600, 372, 150, "#000000");
-            saguaro(700, 388, 96,  "#000000");
-            saguaro(505, 384, 78,  "#05060a");
-            saguaro(250, 392, 130, "#000000");
-            saguaro(960, 392, 116, "#000000");
+            // central group (visible on phones) + wings (desktop)
+            saguaro(600, 372, 158, "#000000");  // hero, center
+            saguaro(770, 392, 104, "#000000");  // medium, right (with gap)
+            saguaro(445, 388, 88,  "#04050a");  // small, left (with gap)
+            saguaro(200, 392, 122, "#000000");  // desktop far left
+            saguaro(1000, 392, 116, "#000000"); // desktop far right
         })();
     </script>
 </body>
