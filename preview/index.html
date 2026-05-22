@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tyler Dix</title>
+    <meta name="description" content="Tyler Dix — human being living in Arizona, US.">
+    <meta property="og:title" content="Tyler Dix">
+    <meta property="og:description" content="human being living in Arizona, US">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tylerdix.com/">
+    <meta name="theme-color" content="#0a0a0a">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+        }
+        .scene {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+        .scene svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            /* keep text in the clear upper-middle, above the dunes */
+            transform: translateY(-6vh);
+        }
+        h1 {
+            font-weight: 400;
+            font-size: clamp(2.1rem, 7vw, 4.2rem);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            /* optical centering: compensate for letter-spacing on the right */
+            text-indent: 0.18em;
+            text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
+        }
+        .tagline {
+            margin-top: 18px;
+            font-size: clamp(0.9rem, 2.6vw, 1.15rem);
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            color: #c8c8c8;
+            text-shadow: 0 1px 16px rgba(0, 0, 0, 0.6);
+        }
+
+        /* twinkle */
+        .star { animation: twinkle var(--dur, 4s) ease-in-out infinite; transform-origin: center; }
+        @keyframes twinkle {
+            0%, 100% { opacity: var(--lo, 0.25); }
+            50%      { opacity: var(--hi, 1); }
+        }
+        /* drifting wisp of cloud */
+        #cloud { animation: drift 90s linear infinite; }
+        @keyframes drift {
+            from { transform: translateX(-260px); }
+            to   { transform: translateX(1460px); }
+        }
+        /* occasional shooting star */
+        #shoot {
+            opacity: 0;
+            animation: shoot 11s ease-in infinite;
+        }
+        @keyframes shoot {
+            0%, 82%   { opacity: 0; transform: translate(0, 0); }
+            83%       { opacity: 0; transform: translate(0, 0); }
+            86%       { opacity: 1; }
+            96%       { opacity: 0; transform: translate(-260px, 150px); }
+            100%      { opacity: 0; transform: translate(-260px, 150px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .star, #cloud, #shoot { animation: none; }
+            .star { opacity: 0.7; }
+            #shoot { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene" aria-hidden="true">
+        <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#070708"/>
+                    <stop offset="0.6" stop-color="#161719"/>
+                    <stop offset="1" stop-color="#26282b"/>
+                </linearGradient>
+                <radialGradient id="moonGlow" cx="0.5" cy="0.5" r="0.5">
+                    <stop offset="0" stop-color="#ffffff" stop-opacity="0.45"/>
+                    <stop offset="0.4" stop-color="#ffffff" stop-opacity="0.12"/>
+                    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+
+            <rect x="0" y="0" width="1200" height="800" fill="url(#sky)"/>
+
+            <!-- moon -->
+            <circle cx="930" cy="150" r="150" fill="url(#moonGlow)"/>
+            <circle cx="930" cy="150" r="46" fill="#fafafa"/>
+            <circle cx="912" cy="138" r="9" fill="#dcdcdc" opacity="0.7"/>
+            <circle cx="946" cy="162" r="6" fill="#dcdcdc" opacity="0.6"/>
+            <circle cx="938" cy="132" r="4" fill="#dcdcdc" opacity="0.6"/>
+
+            <g id="stars"></g>
+
+            <!-- shooting star -->
+            <g id="shoot">
+                <line x1="380" y1="120" x2="430" y2="92" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="430" cy="92" r="2.2" fill="#ffffff"/>
+            </g>
+
+            <!-- faint drifting cloud -->
+            <g id="cloud" opacity="0.10">
+                <ellipse cx="120" cy="210" rx="150" ry="20" fill="#ffffff"/>
+                <ellipse cx="60"  cy="218" rx="90"  ry="14" fill="#ffffff"/>
+                <ellipse cx="200" cy="220" rx="100" ry="13" fill="#ffffff"/>
+            </g>
+
+            <!-- distant mountain ridge -->
+            <path d="M0,470 L120,402 L235,448 L350,360 L470,432 L585,372 L720,446 L835,372 L975,438 L1090,392 L1200,446 L1200,800 L0,800 Z" fill="#1b1c1e"/>
+
+            <!-- rolling foreground dunes -->
+            <path d="M0,575 C200,532 320,612 520,572 C700,536 880,618 1080,566 C1140,551 1200,566 1200,566 L1200,800 L0,800 Z" fill="#040405"/>
+
+            <g id="foreground"></g>
+        </svg>
+    </div>
+
+    <main class="content">
+        <h1>Tyler Dix</h1>
+        <p class="tagline">human being living in Arizona, US</p>
+    </main>
+
+    <script>
+        (function () {
+            var SVGNS = "http://www.w3.org/2000/svg";
+
+            // --- stars: scattered above the ridge line ---
+            var starsGroup = document.getElementById("stars");
+            var STAR_COUNT = 70;
+            for (var i = 0; i < STAR_COUNT; i++) {
+                var x = Math.random() * 1200;
+                var y = Math.random() * 400 + 12;        // 12 .. 412 (above mountains)
+                var r = Math.random() * 1.1 + 0.5;        // 0.5 .. 1.6
+                var c = document.createElementNS(SVGNS, "circle");
+                c.setAttribute("cx", x.toFixed(1));
+                c.setAttribute("cy", y.toFixed(1));
+                c.setAttribute("r", r.toFixed(2));
+                c.setAttribute("fill", "#ffffff");
+                c.setAttribute("class", "star");
+                var lo = (Math.random() * 0.3 + 0.12).toFixed(2);   // dim baseline
+                var hi = (Math.random() * 0.3 + 0.7).toFixed(2);    // bright peak
+                var dur = (Math.random() * 4 + 2.5).toFixed(2) + "s";
+                var delay = (Math.random() * 6).toFixed(2) + "s";
+                c.style.setProperty("--lo", lo);
+                c.style.setProperty("--hi", hi);
+                c.style.setProperty("--dur", dur);
+                c.style.animationDelay = delay;
+                starsGroup.appendChild(c);
+            }
+
+            // --- saguaro silhouettes built from rounded rects ---
+            function rrect(parent, x, y, w, h, fill) {
+                var r = document.createElementNS(SVGNS, "rect");
+                r.setAttribute("x", x);
+                r.setAttribute("y", y);
+                r.setAttribute("width", w);
+                r.setAttribute("height", h);
+                r.setAttribute("rx", Math.min(w, h) / 2);
+                r.setAttribute("fill", fill);
+                parent.appendChild(r);
+            }
+            function saguaro(cx, baseY, h, fill) {
+                var g = document.createElementNS(SVGNS, "g");
+                var tw = h * 0.15;                       // trunk width
+                // trunk
+                rrect(g, cx - tw / 2, baseY - h, tw, h, fill);
+                // right arm: elbow out, then up
+                rrect(g, cx + tw * 0.2, baseY - h * 0.52, h * 0.20, tw * 0.85, fill);
+                rrect(g, cx + tw * 0.2 + h * 0.20 - tw * 0.85, baseY - h * 0.80, tw * 0.85, h * 0.32, fill);
+                // left arm: elbow out, then up (a touch lower)
+                rrect(g, cx - tw * 0.2 - h * 0.17, baseY - h * 0.44, h * 0.17, tw * 0.85, fill);
+                rrect(g, cx - tw * 0.2 - h * 0.17, baseY - h * 0.70, tw * 0.85, h * 0.30, fill);
+                document.getElementById("foreground").appendChild(g);
+            }
+            // depth: far/smaller/lighter behind, near/bigger/black in front
+            saguaro(640, 560, 150, "#101113");   // distant
+            saguaro(250, 600, 250, "#000000");   // foreground left
+            saguaro(980, 600, 200, "#000000");   // foreground right
+            saguaro(150, 605, 130, "#000000");   // small clump left
+        })();
+    </script>
+</body>
+</html>
