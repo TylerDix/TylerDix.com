@@ -9,7 +9,7 @@
     <meta property="og:description" content="human being living in Arizona, US">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tylerdix.com/">
-    <meta property="og:image" content="https://tylerdix.com/images/desert.jpg">
+    <meta property="og:image" content="https://tylerdix.com/videos/desert-poster.jpg">
     <meta name="theme-color" content="#0c0c0c">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,14 +24,16 @@
             overflow: hidden;
         }
 
-        /* fill the screen with the drawing; crop whatever doesn't fit.
-           anchored to the top so the dark night sky sits behind the name */
+        /* full-screen looping video; anchored to the top so the dark sky sits behind the name */
         .bg {
             position: fixed;
             inset: 0;
             z-index: 0;
-            background: #0c0c0c url("/images/desert.jpg") no-repeat center top;
-            background-size: cover;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            background: #0c0c0c;
         }
         /* top darkening so the name reads against the sky */
         .topfade {
@@ -68,12 +70,28 @@
     </style>
 </head>
 <body>
-    <div class="bg" aria-hidden="true"></div>
+    <video class="bg" autoplay muted loop playsinline preload="auto"
+           poster="/videos/desert-poster.jpg" aria-hidden="true">
+        <source src="/videos/desert.mp4" type="video/mp4">
+    </video>
     <div class="topfade" aria-hidden="true"></div>
 
     <header class="name">
         <h1>Tyler Dix</h1>
         <p class="tagline">human being living in Arizona, US</p>
     </header>
+
+    <script>
+        // respect reduced-motion: hold on the poster frame instead of playing
+        (function () {
+            var v = document.querySelector("video.bg");
+            if (!v) return;
+            if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                v.removeAttribute("autoplay");
+                v.addEventListener("loadeddata", function () { try { v.pause(); v.currentTime = 0; } catch (e) {} });
+                try { v.pause(); } catch (e) {}
+            }
+        })();
+    </script>
 </body>
 </html>
