@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apps — Tyler Dix</title>
+    <meta name="description" content="Apps by Tyler Dix. Offline iPhone and iPad tools — no ads, no accounts, no tracking.">
+    <meta property="og:title" content="Apps — Tyler Dix">
+    <meta property="og:description" content="Offline iPhone and iPad tools — no ads, no accounts, no tracking.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tylerdix.com/apps/">
+    <meta name="theme-color" content="#000000">
+    <link rel="canonical" href="https://tylerdix.com/apps/">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --ink: #0a0a0a;
+            --ink-soft: #3a3a3a;
+            --muted: #6b6b6b;
+            --bg: #ffffff;
+            --card: #fafafa;
+            --border: #e3e3e3;
+            --hairline: #ededed;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --ink: #f5f5f5;
+                --ink-soft: #cfcfcf;
+                --muted: #9a9a9a;
+                --bg: #000000;
+                --card: #131313;
+                --border: #262626;
+                --hairline: #1c1c1c;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            color: var(--ink);
+            background: var(--bg);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .container { max-width: 680px; margin: 0 auto; padding: 0 22px; }
+
+        header { padding: 64px 0 8px; }
+        header h1 {
+            font-size: clamp(2rem, 6vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+        header p {
+            margin-top: 12px;
+            color: var(--ink-soft);
+            font-size: clamp(1rem, 3vw, 1.12rem);
+            max-width: 460px;
+        }
+
+        .apps { padding: 36px 0 20px; display: grid; gap: 16px; }
+        .app {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 22px;
+            text-decoration: none;
+            color: var(--ink);
+        }
+        .app:hover { border-color: var(--muted); }
+        .app .icon {
+            width: 60px; height: 60px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+        .app .meta { min-width: 0; }
+        .app .name { font-weight: 700; font-size: 1.12rem; letter-spacing: -0.01em; }
+        .app .desc { color: var(--ink-soft); font-size: 0.94rem; margin-top: 2px; }
+        .app .arrow { margin-left: auto; color: var(--muted); font-size: 1.3rem; flex-shrink: 0; }
+
+        footer {
+            padding: 28px 0 48px;
+            border-top: 1px solid var(--hairline);
+            color: var(--muted);
+            font-size: 0.86rem;
+        }
+        footer a { color: var(--muted); text-decoration: none; }
+        footer a:hover { color: var(--ink); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Apps</h1>
+            <p>Offline tools for iPhone and iPad. No ads, no accounts, no tracking.</p>
+        </div>
+    </header>
+
+    <main class="container apps">
+        <a class="app" href="/slash/">
+            <img class="icon" src="/slash/icon.png" alt="Slash icon">
+            <span class="meta">
+                <span class="name">Slash</span>
+                <span class="desc">IPv4/IPv6 subnet calculator. Paste a CIDR, address, or mask — get the network, hosts, broadcast, and more.</span>
+            </span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <a class="app" href="/subnet-driller/">
+            <img class="icon" src="/subnet-driller/icon.png" alt="Subnet Driller icon">
+            <span class="meta">
+                <span class="name">Subnet Driller</span>
+                <span class="desc">Endless subnetting practice for CCNA &amp; Network+, using the magic-number method.</span>
+            </span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="mailto:hello@tylerdix.com">hello@tylerdix.com</a>
+        </div>
+    </footer>
+</body>
+</html>
