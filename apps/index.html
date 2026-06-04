@@ -89,6 +89,9 @@
         }
         footer a { color: var(--muted); text-decoration: none; }
         footer a:hover { color: var(--ink); }
+        footer .sep { margin: 0 9px; opacity: 0.45; }
+        /* signature doubles as a hidden, unlisted link — looks like plain text */
+        .sig { color: var(--muted); cursor: default; -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
 <body>
@@ -121,7 +124,22 @@
     <footer>
         <div class="container">
             <a href="mailto:hello@tylerdix.com">hello@tylerdix.com</a>
+            <span class="sep" aria-hidden="true">&middot;</span>
+            <span class="sig" id="sig">Tyler Dix</span>
         </div>
     </footer>
+
+    <script>
+        // Easter egg: clicking the name unlocks the unlisted /wealth/ page
+        // by setting a cookie, then takes you there. Nothing visible gives it away.
+        (function () {
+            var sig = document.getElementById("sig");
+            if (!sig) return;
+            sig.addEventListener("click", function () {
+                document.cookie = "w=1; max-age=31536000; path=/; SameSite=Lax";
+                window.location.href = "/wealth/";
+            });
+        })();
+    </script>
 </body>
 </html>
