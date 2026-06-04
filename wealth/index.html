@@ -16,11 +16,11 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="A true-to-scale comparison of $10,000, $1,000,000, and $1,000,000,000 — measured in seconds, salaries, spending, and stacks of cash.">
     <meta property="og:title" content="$10k vs $1M vs $1B — A Scale Comparison">
-    <meta property="og:description" content="A billion is a thousand millions. See the difference at true scale — in time, salary, and stacks of $100 bills.">
+    <meta property="og:description" content="A billion is a thousand millions. Take the 20-second trip, then see the numbers.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tylerdix.com/wealth/">
     <meta property="og:image" content="https://tylerdix.com/wealth/hero.jpg">
-    <meta name="theme-color" content="#08090c">
+    <meta name="theme-color" content="#04050a">
     <meta name="color-scheme" content="dark">
     <link rel="canonical" href="https://tylerdix.com/wealth/">
     <style>
@@ -52,6 +52,7 @@
         .mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
         .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
         section { padding: 84px 0; border-top: 1px solid var(--line); position: relative; }
+        .gone { display: none !important; }
         .eyebrow {
             font-size: 0.74rem; font-weight: 700; letter-spacing: 0.22em;
             text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
@@ -63,8 +64,6 @@
         h2 em { font-style: normal; color: var(--gold); }
         .lede { font-size: clamp(1.05rem, 2.6vw, 1.28rem); color: var(--ink-soft); max-width: 640px; }
         .note { color: var(--muted); font-size: 0.92rem; max-width: 640px; margin-top: 14px; }
-        .red { color: var(--red); }
-        .green { color: var(--green); }
         .gold { color: var(--gold); }
 
         /* reveal-on-scroll */
@@ -75,43 +74,82 @@
             html { scroll-behavior: auto; }
         }
 
-        /* ---------- HERO ---------- */
-        .hero {
-            min-height: 100svh; display: flex; flex-direction: column; justify-content: center;
-            padding: 96px 0 64px; border-top: 0; position: relative; isolation: isolate;
-            background:
-                radial-gradient(120% 80% at 18% -10%, rgba(255,203,69,0.08), transparent 55%),
-                linear-gradient(90deg, rgba(8,9,12,0.97) 0%, rgba(8,9,12,0.88) 34%, rgba(8,9,12,0.52) 58%, rgba(8,9,12,0.72) 100%),
-                linear-gradient(180deg, rgba(8,9,12,0.55) 0%, rgba(8,9,12,0.10) 28%, rgba(8,9,12,0.85) 100%),
-                #08090c url("hero.jpg") center right / cover no-repeat;
+        /* ---------- THE STAGE (autoplay tunnel) ---------- */
+        #stage {
+            position: relative; height: 100svh; min-height: 540px;
+            overflow: hidden; background: #04050a;
+            display: flex; align-items: center; justify-content: center;
         }
-        @media (max-width: 700px) {
-            .hero {
-                background:
-                    linear-gradient(180deg, rgba(8,9,12,0.78) 0%, rgba(8,9,12,0.42) 30%, rgba(8,9,12,0.92) 100%),
-                    #08090c url("hero.jpg") center right / cover no-repeat;
-            }
+        #tunnel { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+        .vignette {
+            position: absolute; inset: 0; pointer-events: none; z-index: 1;
+            background: radial-gradient(62% 62% at 50% 50%, transparent 28%, rgba(4,5,10,0.5) 78%, rgba(4,5,10,0.92) 100%);
         }
-        .hero .wrap { position: relative; z-index: 1; }
-        .hero .kicker { color: var(--muted); letter-spacing: 0.24em; text-transform: uppercase; font-size: 0.74rem; font-weight: 700; margin-bottom: 26px; }
-        .hero h1 {
-            font-size: clamp(2.6rem, 9vw, 5.6rem); font-weight: 850; letter-spacing: -0.04em;
-            line-height: 0.98; margin-bottom: 26px;
-        }
-        .hero h1 .b { color: var(--gold); text-shadow: 0 0 44px rgba(255,203,69,0.35); }
-        .hero .sub { font-size: clamp(1.1rem, 3vw, 1.5rem); color: var(--ink-soft); max-width: 620px; }
-        .hero .sub b { color: var(--ink); font-weight: 700; }
-        .scrollcue { margin-top: 54px; color: var(--muted); font-size: 0.84rem; letter-spacing: 0.18em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 10px; }
-        .scrollcue .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: pulse 1.8s ease-in-out infinite; }
-        @keyframes pulse { 0%,100%{opacity:.35; transform: translateY(0)} 50%{opacity:1; transform: translateY(4px)} }
 
-        .triad { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 48px; }
-        @media (min-width: 720px) { .triad { grid-template-columns: repeat(3, 1fr); } }
-        .tcard { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px 20px; }
-        .tcard .amt { font-size: clamp(1.5rem, 4.4vw, 1.9rem); font-weight: 800; letter-spacing: -0.02em; }
-        .tcard .tag { color: var(--muted); font-size: 0.92rem; margin-top: 6px; }
-        .tcard.b { border-color: var(--gold-deep); background: linear-gradient(180deg, rgba(255,203,69,0.09), rgba(255,203,69,0.02)); }
-        .tcard.b .amt { color: var(--gold); }
+        /* live counter HUD */
+        .hud {
+            position: absolute; inset: 0; z-index: 2; pointer-events: none;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; opacity: 0; transition: opacity .4s ease;
+        }
+        .hud.show { opacity: 1; }
+        .hud-amt {
+            font-size: clamp(2.1rem, 10vw, 6.4rem); font-weight: 850; letter-spacing: -0.03em;
+            color: #fff; line-height: 1; text-shadow: 0 0 48px rgba(255,203,69,0.45);
+        }
+        .hud-ctx {
+            margin-top: 20px; min-height: 1.4em;
+            font-size: clamp(0.82rem, 3vw, 1.02rem); font-weight: 700;
+            color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase;
+        }
+        .hud-ctx.pop { animation: pop .5s ease; }
+        @keyframes pop { 0% { opacity: 0; transform: translateY(9px) scale(.96); } 100% { opacity: 1; transform: none; } }
+
+        /* overlays (intro / outro) */
+        .overlay {
+            position: absolute; inset: 0; z-index: 3; padding: 28px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; transition: opacity .55s ease;
+        }
+        .overlay--out { opacity: 0; pointer-events: none; }
+
+        .intro-kicker { color: var(--muted); letter-spacing: 0.24em; text-transform: uppercase; font-size: 0.74rem; font-weight: 700; margin-bottom: 22px; }
+        .intro-h1 { font-size: clamp(2.5rem, 10vw, 5.4rem); font-weight: 850; letter-spacing: -0.04em; line-height: 0.98; }
+        .intro-h1 .b { color: var(--gold); text-shadow: 0 0 50px rgba(255,203,69,0.4); }
+        .intro-sub { margin-top: 18px; color: var(--ink-soft); font-size: clamp(1.05rem, 3vw, 1.32rem); max-width: 460px; }
+        .begin {
+            position: relative; margin-top: 42px; width: 132px; height: 132px; border-radius: 50%;
+            border: 1px solid var(--gold-deep); color: var(--gold); cursor: pointer;
+            font: inherit; font-weight: 800; font-size: 1.12rem; letter-spacing: 0.02em;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at 50% 38%, rgba(255,203,69,0.24), rgba(255,203,69,0.03));
+            box-shadow: 0 0 60px -10px rgba(255,203,69,0.55);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .begin:hover { transform: scale(1.05); box-shadow: 0 0 84px -6px rgba(255,203,69,0.75); }
+        .begin:active { transform: scale(0.98); }
+        .begin-ring { position: absolute; inset: -12px; border-radius: 50%; border: 1px solid rgba(255,203,69,0.4); animation: ring 2.4s ease-out infinite; }
+        @keyframes ring { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.45); opacity: 0; } }
+        .intro-foot { margin-top: 30px; color: var(--muted); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+        .outro-amt { font-size: clamp(1.7rem, 8vw, 4.4rem); font-weight: 850; color: var(--gold); letter-spacing: -0.02em; text-shadow: 0 0 50px rgba(255,203,69,0.5); }
+        .outro-line { margin-top: 22px; max-width: 560px; color: var(--ink-soft); font-size: clamp(1rem, 3vw, 1.2rem); }
+        .outro-line b { color: #fff; }
+        .outro-cta { margin-top: 34px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: center; }
+        .seebtn { display: inline-block; color: var(--ink); text-decoration: none; border: 1px solid var(--line); border-radius: 99px; padding: 12px 22px; font-weight: 700; background: var(--panel); }
+        .seebtn:hover { border-color: var(--gold); color: var(--gold); }
+        .ghost-btn { background: none; border: 0; color: var(--muted); font: inherit; font-size: 0.92rem; font-weight: 600; cursor: pointer; }
+        .ghost-btn:hover { color: var(--ink); }
+
+        .skip {
+            position: absolute; bottom: 20px; right: 18px; z-index: 4;
+            background: rgba(17,20,27,0.55); border: 1px solid var(--line); color: var(--muted);
+            border-radius: 99px; padding: 8px 16px; font: inherit; font-size: 0.82rem; font-weight: 600;
+            cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        }
+        .skip:hover { color: var(--ink); border-color: var(--muted); }
+        .stage-prog { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; z-index: 4; background: rgba(255,255,255,0.06); }
+        .stage-prog > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--gold-deep), var(--gold)); box-shadow: 0 0 12px rgba(255,203,69,0.7); }
 
         /* ---------- stat rows ---------- */
         .rows { margin-top: 40px; display: grid; gap: 14px; }
@@ -138,11 +176,7 @@
             overflow: hidden; background: #000; position: relative;
             box-shadow: 0 30px 80px -40px rgba(0,0,0,0.9);
         }
-        .gridfig img {
-            display: block; width: 100%;
-            height: clamp(340px, 60vw, 660px);
-            object-fit: cover; object-position: center;
-        }
+        .gridfig img { display: block; width: 100%; height: clamp(340px, 60vw, 660px); object-fit: cover; object-position: center; }
         .gridfig figcaption {
             position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 22px 18px;
             background: linear-gradient(0deg, rgba(8,9,12,0.92), transparent);
@@ -161,10 +195,8 @@
         .readout .nowlbl { color: var(--muted); font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; }
         .track-outer {
             position: relative; margin-top: 28px; overflow-x: auto; overflow-y: hidden;
-            border: 1px solid var(--line); border-radius: 16px; background:
-                linear-gradient(180deg, var(--panel), #0b0d12);
-            cursor: grab; -webkit-overflow-scrolling: touch;
-            scrollbar-color: var(--gold-deep) transparent;
+            border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(180deg, var(--panel), #0b0d12);
+            cursor: grab; -webkit-overflow-scrolling: touch; scrollbar-color: var(--gold-deep) transparent;
         }
         .track-outer.drag { cursor: grabbing; }
         .track-outer::-webkit-scrollbar { height: 10px; }
@@ -216,20 +248,42 @@
 </head>
 <body>
 
-    <!-- HERO -->
-    <header class="hero">
-        <div class="wrap">
-            <div class="kicker">Three numbers, to scale &middot; an experiment</div>
-            <h1>A million is<br>nowhere near<br><span class="b">a billion.</span></h1>
-            <p class="sub">Written out, <b>$1,000,000</b> and <b>$1,000,000,000</b> look almost alike, and our intuition treats them that way. They&rsquo;re not close. Here&rsquo;s the difference, measured a few different ways.</p>
-            <div class="triad">
-                <div class="tcard"><div class="amt mono">$10,000</div><div class="tag">The baseline.</div></div>
-                <div class="tcard"><div class="amt mono">$1,000,000</div><div class="tag">100 &times; $10,000</div></div>
-                <div class="tcard b"><div class="amt mono">$1,000,000,000</div><div class="tag">1,000 &times; $1,000,000</div></div>
-            </div>
-            <div class="scrollcue"><span class="dot"></span> Scroll</div>
+    <!-- ============ THE STAGE: one-click autoplay tunnel ============ -->
+    <section id="stage" aria-label="Journey from zero to one billion dollars">
+        <canvas id="tunnel" aria-hidden="true"></canvas>
+        <div class="vignette" aria-hidden="true"></div>
+
+        <div class="hud" id="hud" aria-hidden="true">
+            <div class="hud-amt mono" id="amt">$0</div>
+            <div class="hud-ctx" id="ctx"></div>
         </div>
-    </header>
+
+        <div class="overlay" id="intro">
+            <div class="intro-kicker">An experiment &middot; $10k &middot; $1M &middot; $1B</div>
+            <h1 class="intro-h1">How big is<br><span class="b">a billion?</span></h1>
+            <p class="intro-sub">Hardly anyone can really picture it. Press the button and take the trip from one dollar to a billion.</p>
+            <button class="begin" id="begin" type="button" aria-label="Begin the journey to one billion dollars">
+                <span class="begin-ring" aria-hidden="true"></span>
+                <span class="begin-label">&#9654; Begin</span>
+            </button>
+            <div class="intro-foot">about 20 seconds &middot; sit back &middot; watch the counter</div>
+        </div>
+
+        <div class="overlay overlay--out" id="outro" aria-hidden="true">
+            <div class="outro-amt mono">$1,000,000,000</div>
+            <p class="outro-line">One billion dollars. You passed <b>$1,000,000</b> in the first second of the trip &mdash; then kept going a thousand times further.</p>
+            <div class="outro-cta">
+                <a class="seebtn" href="#details">See the numbers &darr;</a>
+                <button class="ghost-btn" id="again" type="button">&#8635; Replay</button>
+            </div>
+        </div>
+
+        <button class="skip gone" id="skip" type="button">Skip &darr;</button>
+        <div class="stage-prog" aria-hidden="true"><i id="sprog"></i></div>
+    </section>
+
+    <!-- ============ THE NUMBERS (factual breakdown) ============ -->
+    <main id="details">
 
     <!-- SECONDS -->
     <section>
@@ -279,8 +333,8 @@
             <div class="eyebrow">True scale &middot; drag the timeline</div>
             <div class="ridehead">
                 <div style="max-width:520px">
-                    <h2>Now travel to a billion.</h2>
-                    <p class="lede">Same map, no zoom cheats: <b>1 pixel = $10,000.</b> A millionaire sits 100 pixels in &mdash; one flick of the finger. Then keep going.</p>
+                    <h2>Travel it yourself.</h2>
+                    <p class="lede">Same trip, no zoom cheats: <b>1 pixel = $10,000.</b> A millionaire sits 100 pixels in &mdash; one flick of the finger. Then keep going.</p>
                 </div>
                 <div class="readout">
                     <div class="now mono" id="now">$0</div>
@@ -303,7 +357,7 @@
                 <button data-to="10000000">$10M</button>
                 <button data-to="100000000">$100M</button>
                 <button data-to="1000000000">$1B</button>
-                <button id="ride">▶ Ride it</button>
+                <button id="ride">&#9654; Ride it</button>
             </div>
             <p class="hint">Drag the bar, scroll sideways, or tap a number. A paid-off house, a millionaire, ten millionaires &mdash; all sit within the first sliver, while a billion stretches far down the track.</p>
         </div>
@@ -338,7 +392,7 @@
         <div class="wrap reveal">
             <div class="eyebrow">Spending it &middot; $1,000 every day</div>
             <h2>How long to <em>spend</em> it.</h2>
-            <p class="lede">Now flip it. Blow <b>$1,000 a day</b>, every day, starting today:</p>
+            <p class="lede">Now flip it. Spend <b>$1,000 a day</b>, every day, starting today:</p>
             <div class="rows">
                 <div class="row">
                     <div class="label mono">$10K</div>
@@ -399,12 +453,14 @@
                     <li><b>Earning:</b> U.S. real median household income was ~$80,610 in 2023 (U.S. Census Bureau). Rounded to $80,000. $1B &divide; $80,000 = 12,500 years.</li>
                     <li><b>Spending:</b> $1,000,000,000 &divide; $1,000/day = 1,000,000 days &asymp; 2,738 years. At $100,000/day &asymp; 27.4 years.</li>
                     <li><b>Stacks:</b> a U.S. $100 bill is ~0.0043 in (0.109 mm) thick and weighs ~1 g (U.S. Bureau of Engraving &amp; Printing / Federal Reserve). $1B = 10,000,000 bills &rarr; ~3,583 ft (1.09 km) tall, ~10,000 kg. Burj Khalifa: 2,717 ft (828 m).</li>
-                    <li><b>Timeline:</b> 1 pixel = $10,000, so the bar runs to 100,000 px at $1B. All positions are exactly to scale &mdash; no zoom or compression.</li>
+                    <li><b>The trip &amp; timeline:</b> 1 pixel = $10,000, so a billion is 100,000 px. The autoplay counter shows the small magnitudes ($10k&ndash;$1M) in the first second, then climbs to $1B &mdash; the long stretch is the point.</li>
                 </ul>
                 <p class="note">Figures are rounded for clarity; the goal is honest scale, not penny precision.</p>
             </details>
         </div>
     </section>
+
+    </main>
 
     <footer>
         <div class="wrap">
@@ -415,11 +471,157 @@
     </footer>
 
     <script>
+    /* ===================== THE STAGE: autoplay tunnel ===================== */
+    (function () {
+        "use strict";
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var MAX = 1000000000;
+
+        var cv     = document.getElementById("tunnel");
+        var amtEl  = document.getElementById("amt");
+        var mileEl = document.getElementById("ctx");
+        var hud    = document.getElementById("hud");
+        var intro  = document.getElementById("intro");
+        var outro  = document.getElementById("outro");
+        var begin  = document.getElementById("begin");
+        var again  = document.getElementById("again");
+        var skip   = document.getElementById("skip");
+        var sprog  = document.getElementById("sprog");
+        if (!cv) return;
+
+        var g = cv.getContext("2d");
+        var DPR = Math.min(window.devicePixelRatio || 1, 2);
+        var W = 0, H = 0, cx = 0, cy = 0, focal = 600;
+        function resize() {
+            W = cv.clientWidth; H = cv.clientHeight;
+            cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+            g.setTransform(DPR, 0, 0, DPR, 0, 0);
+            cx = W / 2; cy = H / 2; focal = Math.max(W, H) * 0.8;
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        /* starfield */
+        var N = (window.innerWidth < 700) ? 170 : 340;
+        var stars = [];
+        function spawn(s) { s.x = Math.random() - 0.5; s.y = Math.random() - 0.5; s.z = Math.random() * 0.6 + 0.4; s.gold = Math.random() < 0.5; return s; }
+        for (var i = 0; i < N; i++) stars.push(spawn({}));
+
+        function drawStars(dz, intense) {
+            g.fillStyle = "rgba(4,5,10," + (intense ? 0.32 : 0.16) + ")";
+            g.fillRect(0, 0, W, H);
+            for (var i = 0; i < stars.length; i++) {
+                var s = stars[i];
+                s.z -= dz;
+                if (s.z <= 0.04) { spawn(s); s.z = 1; continue; }
+                var k = focal / s.z;
+                var sx = cx + s.x * k, sy = cy + s.y * k;
+                if (sx < -60 || sx > W + 60 || sy < -60 || sy > H + 60) { spawn(s); s.z = 1; continue; }
+                var b = 1 - s.z;
+                var r = Math.max(0.5, b * 2.7);
+                g.beginPath();
+                g.fillStyle = s.gold
+                    ? "rgba(255," + (188 + Math.floor(b * 60)) + ",80," + (0.22 + b * 0.78) + ")"
+                    : "rgba(220,228,255," + (0.12 + b * 0.6) + ")";
+                g.arc(sx, sy, r, 0, 6.2832);
+                g.fill();
+            }
+        }
+
+        /* value-over-time: small magnitudes register fast, then the long haul to $1B */
+        var KNOTS = [
+            [0.0, 0], [0.8, 1e4], [1.5, 1e5], [2.4, 1e6], [3.6, 1e7],
+            [5.0, 1e8], [7.5, 2.5e8], [11.5, 5e8], [15.5, 7.5e8], [20.0, 1e9]
+        ];
+        var DURATION = KNOTS[KNOTS.length - 1][0];
+        function valueAt(t) {
+            for (var i = 1; i < KNOTS.length; i++) {
+                if (t <= KNOTS[i][0]) {
+                    var a = KNOTS[i - 1], b = KNOTS[i];
+                    return a[1] + (b[1] - a[1]) * (t - a[0]) / (b[0] - a[0]);
+                }
+            }
+            return MAX;
+        }
+
+        var MILES = [
+            [1e4, "$10,000"], [1e5, "$100,000"], [1e6, "$1,000,000 · a millionaire"],
+            [1e7, "$10,000,000"], [1e8, "$100,000,000"], [2.5e8, "$250,000,000"],
+            [5e8, "$500,000,000 · halfway"], [7.5e8, "$750,000,000"],
+            [1e9, "$1,000,000,000 · one billion"]
+        ];
+        var nf = new Intl.NumberFormat("en-US");
+        var milePtr = 0, curVal = 0;
+
+        function renderHUD(v) { amtEl.textContent = "$" + nf.format(Math.round(v / 1000) * 1000); }
+        function checkMiles(v) {
+            while (milePtr < MILES.length && v >= MILES[milePtr][0]) {
+                mileEl.textContent = MILES[milePtr][1];
+                mileEl.classList.remove("pop"); void mileEl.offsetWidth; mileEl.classList.add("pop");
+                milePtr++;
+            }
+        }
+
+        var riding = false, ended = false, rideStart = null, lastTs = null, curSpeed = 0.15;
+
+        function frame(ts) {
+            if (lastTs == null) lastTs = ts;
+            var dt = Math.min(0.05, (ts - lastTs) / 1000); lastTs = ts;
+            var targetSpeed = 0.15;
+            if (riding) {
+                if (rideStart == null) rideStart = ts;
+                var t = (ts - rideStart) / 1000;
+                var v = valueAt(t);
+                var inst = (v - curVal) / (dt || 0.016);
+                curVal = v;
+                renderHUD(v);
+                checkMiles(v);
+                sprog.style.width = (v / MAX * 100) + "%";
+                targetSpeed = 0.55 + Math.min(3.4, inst / 1.4e8);
+                if (t >= DURATION) finish();
+            }
+            curSpeed += (targetSpeed - curSpeed) * Math.min(1, dt * 4);
+            drawStars(curSpeed * dt, riding);
+            requestAnimationFrame(frame);
+        }
+
+        function start() {
+            intro.classList.add("overlay--out");
+            milePtr = 0; curVal = 0; ended = false;
+            if (reduce) { finish(); return; }
+            hud.classList.add("show");
+            skip.classList.remove("gone");
+            rideStart = null; riding = true;
+        }
+        function finish() {
+            if (ended) return; ended = true; riding = false;
+            curVal = MAX; renderHUD(MAX); checkMiles(MAX);
+            sprog.style.width = "100%";
+            skip.classList.add("gone");
+            hud.classList.remove("show");
+            outro.classList.remove("overlay--out");
+        }
+        function replay() {
+            outro.classList.add("overlay--out");
+            milePtr = 0; curVal = 0; ended = false; renderHUD(0);
+            mileEl.textContent = ""; sprog.style.width = "0%";
+            hud.classList.add("show"); skip.classList.remove("gone");
+            rideStart = null; riding = true;
+        }
+
+        begin.addEventListener("click", start);
+        skip.addEventListener("click", finish);
+        again.addEventListener("click", replay);
+
+        if (reduce) { drawStars(0, false); }   // one static frame
+        else { requestAnimationFrame(frame); }
+    })();
+
+    /* ===================== reveal + drag-it-yourself timeline ===================== */
     (function () {
         "use strict";
         var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        /* ---- reveal on scroll ---- */
         var io = ("IntersectionObserver" in window) ? new IntersectionObserver(function (es) {
             es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
         }, { threshold: 0.12 }) : null;
@@ -427,10 +629,7 @@
             if (io) io.observe(el); else el.classList.add("in");
         });
 
-        /* ---- scroll-to-a-billion timeline ---- */
-        var PX_PER = 10000;            // $10,000 per pixel
-        var MAX = 1000000000;          // $1B
-        var WIDTH = MAX / PX_PER;      // 100,000 px
+        var PX_PER = 10000, MAX = 1000000000, WIDTH = MAX / PX_PER;
         var track = document.getElementById("track");
         var inner = document.getElementById("trackInner");
         var now = document.getElementById("now");
@@ -446,7 +645,6 @@
 
         if (track && inner) {
             inner.style.width = WIDTH + "px";
-
             var marks = [
                 { v: 190000,    t: "$190K",  d: "Median U.S. household net worth", up: false, major: false },
                 { v: 500000,    t: "$500K",  d: "A paid-off home", up: true,  major: false },
@@ -477,37 +675,23 @@
                 var max = track.scrollWidth - track.clientWidth;
                 prog.style.width = (max > 0 ? (track.scrollLeft / max) * 100 : 0) + "%";
             }
-            track.addEventListener("scroll", function () {
-                window.requestAnimationFrame(update);
-            }, { passive: true });
-
-            /* vertical wheel -> horizontal scroll */
+            track.addEventListener("scroll", function () { window.requestAnimationFrame(update); }, { passive: true });
             track.addEventListener("wheel", function (e) {
-                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                    track.scrollLeft += e.deltaY;
-                    e.preventDefault();
-                }
+                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { track.scrollLeft += e.deltaY; e.preventDefault(); }
             }, { passive: false });
 
-            /* drag to pan */
-            var down = false, startX = 0, startL = 0, moved = false;
+            var down = false, startX = 0, startL = 0;
             track.addEventListener("pointerdown", function (e) {
-                down = true; moved = false; startX = e.clientX; startL = track.scrollLeft;
+                down = true; startX = e.clientX; startL = track.scrollLeft;
                 track.classList.add("drag");
                 track.setPointerCapture && track.setPointerCapture(e.pointerId);
             });
-            track.addEventListener("pointermove", function (e) {
-                if (!down) return;
-                var dx = e.clientX - startX;
-                if (Math.abs(dx) > 3) moved = true;
-                track.scrollLeft = startL - dx;
-            });
+            track.addEventListener("pointermove", function (e) { if (down) track.scrollLeft = startL - (e.clientX - startX); });
             function endDrag() { down = false; track.classList.remove("drag"); }
             track.addEventListener("pointerup", endDrag);
             track.addEventListener("pointercancel", endDrag);
             track.addEventListener("pointerleave", endDrag);
 
-            /* keyboard */
             track.addEventListener("keydown", function (e) {
                 var step = track.clientWidth * 0.6;
                 if (e.key === "ArrowRight") { track.scrollLeft += step; e.preventDefault(); }
@@ -516,30 +700,24 @@
                 else if (e.key === "End") { track.scrollLeft = track.scrollWidth; e.preventDefault(); }
             });
 
-            /* jump + ride */
             function targetLeft(v) { return (v / PX_PER) - track.clientWidth / 2; }
             function animateTo(left, ms) {
                 if (reduce) { track.scrollLeft = left; update(); return; }
-                var start = track.scrollLeft, delta = left - start, t0 = null;
-                function frame(t) {
+                var s0 = track.scrollLeft, delta = left - s0, t0 = null;
+                function step(t) {
                     if (t0 === null) t0 = t;
                     var p = Math.min(1, (t - t0) / ms);
-                    var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
-                    track.scrollLeft = start + delta * e;
-                    if (p < 1) window.requestAnimationFrame(frame);
+                    var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+                    track.scrollLeft = s0 + delta * e;
+                    if (p < 1) window.requestAnimationFrame(step);
                 }
-                window.requestAnimationFrame(frame);
+                window.requestAnimationFrame(step);
             }
             document.querySelectorAll(".jump button[data-to]").forEach(function (b) {
-                b.addEventListener("click", function () {
-                    animateTo(Math.max(0, targetLeft(parseFloat(b.dataset.to))), 900);
-                });
+                b.addEventListener("click", function () { animateTo(Math.max(0, targetLeft(parseFloat(b.dataset.to))), 900); });
             });
             var ride = document.getElementById("ride");
-            if (ride) ride.addEventListener("click", function () {
-                track.scrollLeft = 0;
-                animateTo(track.scrollWidth - track.clientWidth, 9000);
-            });
+            if (ride) ride.addEventListener("click", function () { track.scrollLeft = 0; animateTo(track.scrollWidth - track.clientWidth, 9000); });
 
             update();
             window.addEventListener("resize", update);
