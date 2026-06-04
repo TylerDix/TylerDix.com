@@ -133,10 +133,22 @@
         .bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold-deep), var(--gold)); border-radius: 99px; }
 
         /* ---------- DOT GRID ---------- */
-        #grid { display: grid; gap: 3px; margin: 36px 0 8px; grid-template-columns: repeat(25, 1fr); }
-        @media (max-width: 600px){ #grid { grid-template-columns: repeat(20, 1fr); gap: 2px; } }
-        .cell { aspect-ratio: 1; border-radius: 2px; background: #1b1f29; transition: background .25s ease; }
-        .cell.on { background: var(--gold); box-shadow: 0 0 10px rgba(255,203,69,0.7); }
+        .gridfig {
+            margin: 34px 0 6px; border: 1px solid var(--line); border-radius: 18px;
+            overflow: hidden; background: #000; position: relative;
+            box-shadow: 0 30px 80px -40px rgba(0,0,0,0.9);
+        }
+        .gridfig img {
+            display: block; width: 100%;
+            height: clamp(340px, 60vw, 660px);
+            object-fit: cover; object-position: center;
+        }
+        .gridfig figcaption {
+            position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 22px 18px;
+            background: linear-gradient(0deg, rgba(8,9,12,0.92), transparent);
+            font-size: 0.95rem; color: var(--ink-soft); text-align: center;
+        }
+        .gridfig figcaption b { color: var(--gold); }
         .gridlegend { display: flex; flex-wrap: wrap; gap: 18px 26px; margin-top: 22px; font-size: 0.95rem; color: var(--ink-soft); }
         .gridlegend b { color: var(--ink); }
         .swatch { display: inline-block; width: 13px; height: 13px; border-radius: 3px; vertical-align: -1px; margin-right: 8px; }
@@ -248,12 +260,15 @@
         <div class="wrap reveal">
             <div class="eyebrow">Proportion &middot; every dot is a million</div>
             <h2>This whole field is <em>one billion.</em></h2>
-            <p class="lede">Each dot below is a full <b>$1,000,000</b>. All 1,000 of them, together, make one billion dollars. When people picture &ldquo;a billionaire,&rdquo; they picture the <span class="gold">single glowing dot</span>. The reality is the entire grid.</p>
-            <div id="grid" aria-hidden="true"></div>
+            <p class="lede">Every dot in this field is a full <b>$1,000,000</b>. The one that&rsquo;s glowing? That&rsquo;s a millionaire &mdash; already wealthier than almost everyone alive. When people picture &ldquo;a billionaire,&rdquo; they picture that <span class="gold">single point of light</span>. The truth is the entire field around it.</p>
+            <figure class="gridfig reveal">
+                <img src="grid.jpg" alt="A vast dark grid of dim dots with a single dot glowing gold at the center — each dot one million dollars, the whole field one billion.">
+                <figcaption>One glow is a <b>millionaire</b>. The whole field is a <b>billionaire</b>.</figcaption>
+            </figure>
             <div class="gridlegend">
-                <span><span class="swatch" style="background:var(--gold)"></span><b>$1,000,000</b> &mdash; one dot</span>
-                <span><span class="swatch" style="background:#1b1f29"></span><b>$1,000,000,000</b> &mdash; all 1,000 dots</span>
-                <span class="note" style="margin:0">&hellip;and <b class="gold">$10,000</b>? One-hundredth of a single dot. You can&rsquo;t even see it here.</span>
+                <span><span class="swatch" style="background:var(--gold)"></span><b>$1,000,000</b> &mdash; the one glowing dot</span>
+                <span><span class="swatch" style="background:#1b1f29"></span><b>$1,000,000,000</b> &mdash; the entire field</span>
+                <span class="note" style="margin:0">&hellip;and <b class="gold">$10,000</b>? A hundredth of one dot &mdash; invisible at this scale.</span>
             </div>
         </div>
     </section>
@@ -411,18 +426,6 @@
         document.querySelectorAll(".reveal").forEach(function (el) {
             if (io) io.observe(el); else el.classList.add("in");
         });
-
-        /* ---- dot grid: 1000 dots, first one glows ---- */
-        var grid = document.getElementById("grid");
-        if (grid) {
-            var frag = document.createDocumentFragment();
-            for (var i = 0; i < 1000; i++) {
-                var c = document.createElement("span");
-                c.className = "cell" + (i === 0 ? " on" : "");
-                frag.appendChild(c);
-            }
-            grid.appendChild(frag);
-        }
 
         /* ---- scroll-to-a-billion timeline ---- */
         var PX_PER = 10000;            // $10,000 per pixel
