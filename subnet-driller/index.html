@@ -201,6 +201,43 @@
         footer a:hover { color: var(--ink); }
         footer .sep { margin: 0 8px; opacity: 0.5; }
 
+
+        .rating-summary {
+            display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px;
+            margin-bottom: 18px;
+        }
+        .rating-summary .score {
+            font-size: 2.1rem; font-weight: 800; letter-spacing: -0.03em;
+            color: var(--ink); line-height: 1;
+        }
+        .stars { color: var(--ink); letter-spacing: 0.12em; font-size: 0.95rem; }
+        .rating-summary .count { color: var(--muted); font-size: 0.88rem; }
+
+        .reviews-grid {
+            display: grid; grid-template-columns: 1fr; gap: 14px;
+        }
+        @media (min-width: 620px) {
+            .reviews-grid { grid-template-columns: 1fr 1fr; }
+        }
+        .review-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 22px;
+            display: flex; flex-direction: column;
+        }
+        .review-card .stars { margin-bottom: 9px; }
+        .review-card blockquote {
+            font-size: 0.98rem; color: var(--ink); line-height: 1.55;
+            margin: 0 0 14px; quotes: none;
+        }
+        .review-card .review-title { font-weight: 700; }
+        .review-card cite {
+            font-style: normal; color: var(--muted); font-size: 0.84rem;
+            margin-top: auto;
+        }
+        .reviews-note { color: var(--muted); font-size: 0.82rem; margin: 16px 0 0; }
+
         @media (max-width: 420px) {
             .container { padding: 0 18px; }
             header.hero { padding: 48px 0 32px; }
@@ -240,6 +277,41 @@
             </div>
         </div>
     </header>
+
+    <section id="reviews">
+        <div class="container">
+            <h2>What people are saying</h2>
+
+            <div class="rating-summary">
+                <span class="score">5.0</span>
+                <span class="stars" aria-label="Rated 5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span class="count">10 ratings on the App Store</span>
+            </div>
+
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <span class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <blockquote>
+                        <span class="review-title">Best app for CCNA prep.</span>
+                        &ldquo;This is up there with Jeremy&rsquo;s IT Lab in terms of importance for CCNA studying.
+                        You can get as many VLSM repetitions as you want with this app. I can&rsquo;t stop using it.&rdquo;
+                    </blockquote>
+                    <cite>seanyyboi &middot; United States &middot; August 2026</cite>
+                </div>
+
+                <div class="review-card">
+                    <span class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <blockquote>
+                        <span class="review-title">Great for practice.</span>
+                        &ldquo;This app is helping me a ton to practice before I take the CCNA exam.&rdquo;
+                    </blockquote>
+                    <cite>Freddyish &middot; Canada &middot; June 2026</cite>
+                </div>
+            </div>
+
+            <p class="reviews-note">Unedited reviews left on the App Store. Nothing here was solicited or incentivized.</p>
+        </div>
+    </section>
 
     <section id="support">
         <div class="container">
